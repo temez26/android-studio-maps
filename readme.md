@@ -9,3 +9,6 @@ The setOnMapClickListener method sets a listener that creates a new draggable ma
 The setOnMarkerClickListener method sets a listener that displays a dialog for editing or deleting an existing marker. The dialog includes EditText views for the title and snippet and buttons for OK, Cancel, and Delete.
 
 The MarkerDatabaseHelper class is a helper class for creating and managing the database that stores the markers. It extends the SQLiteOpenHelper class and provides methods for creating and upgrading the database, inserting and deleting markers, and retrieving all markers.
+
+### disclaimer 
+you need your own google api key.
