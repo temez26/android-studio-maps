@@ -1,7 +1,7 @@
-#Description
+Description
 This code package contains an Android application that displays a Google Map with the ability to add custom markers, edit their titles and snippets, and delete them. The application uses the Google Maps Android API and SQLite for saving the markers. The code is written in Java.
 
-##Code Explanation
+Code Explanation
 The FragmentMaps class is a Fragment that implements the OnMapReadyCallback interface, which provides a callback for when the map is ready to be used. The callback method initializes the GoogleMap object and sets up some default markers on the map.
 
 The setOnMapClickListener method sets a listener that creates a new draggable marker at the clicked coordinates. Another setOnMapClickListener method is used to prompt the user to enter a title and a snippet for the marker before adding it to the map.
