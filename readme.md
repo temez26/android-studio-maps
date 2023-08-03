@@ -11,4 +11,4 @@ The setOnMarkerClickListener method sets a listener that displays a dialog for e
 The MarkerDatabaseHelper class is a helper class for creating and managing the database that stores the markers. It extends the SQLiteOpenHelper class and provides methods for creating and upgrading the database, inserting and deleting markers, and retrieving all markers.
 
 # Disclaimer 
-you need your own google api key.
+You need your own google api key.
