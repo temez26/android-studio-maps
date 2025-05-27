@@ -1,17 +1,76 @@
-# 🗺️ Description 📱
+# Android Maps Application
 
-This code package contains an Android application that displays a Google Map with the ability to add custom markers, edit their titles and snippets, and delete them. The application uses the Google Maps Android API and SQLite for saving the markers. The code is written in Java.
+A native Android application that provides interactive mapping functionality with persistent marker management using Google Maps API and SQLite database.
 
-# 💡 Code Explanation 🧩
+## Features
 
-The `FragmentMaps` class is a Fragment that implements the `OnMapReadyCallback` interface, which provides a callback for when the map is ready to be used. The callback method initializes the `GoogleMap` object and sets up some default markers on the map.
+- **Interactive Map Navigation**: Full Google Maps integration with zoom, pan, and gesture controls
+- **Custom Marker Management**: Add, edit, and delete markers with custom titles and descriptions
+- **Persistent Storage**: SQLite database integration for marker data persistence across app sessions
+- **Location Search**: Geocoding functionality for location-based searches
+- **Real-time Updates**: Dynamic marker manipulation with immediate visual feedback
 
-The `setOnMapClickListener` method sets a listener that creates a new draggable marker at the clicked coordinates. Another `setOnMapClickListener` method is used to prompt the user to enter a title and a snippet for the marker before adding it to the map.
+## Technical Stack
 
-The `setOnMarkerClickListener` method sets a listener that displays a dialog for editing or deleting an existing marker. The dialog includes EditText views for the title and snippet and buttons for OK, Cancel, and Delete.
+- **Language**: Java 8
+- **Minimum SDK**: API 30 (Android 11)
+- **Target SDK**: API 33 (Android 13)
+- **Architecture**: Fragment-based UI with SQLite data layer
+- **Dependencies**:
+  - Google Play Services Maps 18.0.2
+  - Google Play Services Location 17.0.0
+  - AndroidX AppCompat 1.6.1
+  - Material Design Components 1.8.0
 
-The `MarkerDatabaseHelper` class is a helper class for creating and managing the database that stores the markers. It extends the `SQLiteOpenHelper` class and provides methods for creating and upgrading the database, inserting and deleting markers, and retrieving all markers.
+## Core Components
 
-# 🚫 Disclaimer 📜
+### MainActivity
 
-And of course, you need your own Google API key.
+Application entry point handling permission management and fragment container.
+
+### FragmentMaps
+
+Map interaction and marker management UI with Google Maps integration and marker CRUD operations.
+
+### MarkerDatabaseHelper
+
+Data persistence layer with SQLite database operations for marker storage.
+
+## Setup Instructions
+
+### Prerequisites
+
+- Android Studio Arctic Fox or later
+- JDK 8 or higher
+- Google Maps API key
+
+### Configuration
+
+1. **API Key Setup**:
+
+   ```xml
+   <!-- Add to AndroidManifest.xml -->
+   <meta-data
+       android:name="com.google.android.geo.API_KEY"
+       android:value="${MAPS_API_KEY}" />
+   ```
+
+2. **Local Properties**:
+
+   ```properties
+   # Add to local.properties
+   MAPS_API_KEY=your_google_maps_api_key_here
+   ```
+
+3. **Required Permissions**:
+   ```xml
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+   ```
+
+## Known Issues
+
+- Multiple map click listeners that override each other
+- Database connections need proper resource management
+- Limited error handling for network operations
+- Basic dialog implementations without input validation
