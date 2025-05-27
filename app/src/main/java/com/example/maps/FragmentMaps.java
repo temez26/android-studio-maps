@@ -59,49 +59,46 @@ public class FragmentMaps extends Fragment {
                 mMap.addMarker(markerOptions);
             }
 
-            // Set a click listener for the map that adds a new draggable marker at the clicked coordinates
-            mMap.setOnMapClickListener(latLng -> {
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(latLng)
-                        .title("Custom Marker Title")
-                        .snippet("Click here to edit the title and snippet");
-                Marker m = mMap.addMarker(markerOptions);
-                m.setDraggable(true);
-            });
-
-
+  
             mMap.setOnMapClickListener(latLng -> {
                 // Build an AlertDialog to prompt the user to enter a title and a snippet for the marker
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Custom Marker");
+                builder.setTitle("Add New Marker");
 
-                // Create the EditText views for the title and snippet
+                // Create a LinearLayout to hold both EditText views
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                
                 final EditText titleEditText = new EditText(getContext());
-                titleEditText.setHint("Title");
-                builder.setView(titleEditText);
+                titleEditText.setHint("Enter title");
+                layout.addView(titleEditText);
 
                 final EditText snippetEditText = new EditText(getContext());
-                snippetEditText.setHint("add-info");
-                builder.setView(snippetEditText);
+                snippetEditText.setHint("Enter description");
+                layout.addView(snippetEditText);
+                
+                builder.setView(layout);
 
-                // Set up the buttons
                 builder.setPositiveButton("OK", (dialog, which) -> {
-                    String title = titleEditText.getText().toString();
-                    String snippet = snippetEditText.getText().toString();
+                    String title = titleEditText.getText().toString().trim();
+                    String snippet = snippetEditText.getText().toString().trim();
+                    
+                    if (title.isEmpty()) title = "Unnamed Marker";
 
-                    // Add the marker to the map with the user-provided title and snippet
                     MarkerOptions markerOptions = new MarkerOptions()
                             .position(latLng)
                             .title(title)
                             .snippet(snippet);
                     Marker m = mMap.addMarker(markerOptions);
                     m.setDraggable(true);
-                });
-                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
-                // Show the dialog
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                    // Save to database
+                    MarkerDatabaseHelper databaseHelper = new MarkerDatabaseHelper(getContext());
+                    databaseHelper.insertMarker(latLng.latitude, latLng.longitude, title, snippet);
+                });
+
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+                builder.create().show();
             });
 
 

@@ -101,37 +101,36 @@ public class MarkerDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // This method retrieves all markers from the database and returns a List of MarkerOptions
+   
     public List<MarkerOptions> getAllMarkers() {
-
         List<MarkerOptions> markerOptionsList = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        
+        try {
+            db = getReadableDatabase();
+            cursor = db.query(
+                    MarkerContract.MarkerEntry.TABLE_NAME,
+                    null, null, null, null, null, null
+            );
+            
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") double latitude = cursor.getDouble(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_LATITUDE));
+                @SuppressLint("Range") double longitude = cursor.getDouble(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_LONGITUDE));
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_TITLE));
+                @SuppressLint("Range") String snippet = cursor.getString(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_SNIPPET));
 
-        SQLiteDatabase db = getReadableDatabase();
-
-        Cursor cursor = db.query(
-                MarkerContract.MarkerEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        // Iterate over the Cursor to extract each marker and add it to the List
-        while (cursor.moveToNext()) {
-
-            @SuppressLint("Range") double latitude = cursor.getDouble(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_LATITUDE));
-            @SuppressLint("Range") double longitude = cursor.getDouble(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_LONGITUDE));
-            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_TITLE));
-            @SuppressLint("Range") String snippet = cursor.getString(cursor.getColumnIndex(MarkerContract.MarkerEntry.COLUMN_NAME_SNIPPET));
-
-            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude)).title(title).snippet(snippet);
-
-            markerOptionsList.add(markerOptions);
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(new LatLng(latitude, longitude))
+                        .title(title)
+                        .snippet(snippet);
+                markerOptionsList.add(markerOptions);
+            }
+        } finally {
+            if (cursor != null) cursor.close();
+            if (db != null) db.close();
         }
-        // Close the Cursor and the database
-        cursor.close();
-        db.close();
-        // Return the List of MarkerOptions
+        
         return markerOptionsList;
     }
 }
